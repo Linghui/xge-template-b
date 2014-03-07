@@ -1,7 +1,5 @@
 package com.gol.request;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Application.ApplicationType;
 
 public class GameURL {
 
@@ -15,9 +13,12 @@ public class GameURL {
 
 	// internet server
 	public static final String ANDROID_HOST = "www.jian-yin.com";
-	public static final int ANDROID_PORT = 8080;
+	public static final int ANDROID_PORT = 80;
 	public static final String ANDROID_REQUEST_HEAD = httpHead + ANDROID_HOST
 			+ ":" + ANDROID_PORT + "/index.php/";
+	
+	public static final String test = "test_for_temp";
+	
 
 	public static String getRequestHead() {
 //		if (Gdx.app.getType() == ApplicationType.Desktop) {
@@ -27,4 +28,7 @@ public class GameURL {
 			return ANDROID_REQUEST_HEAD;
 		}
 	}
+	
+	
+	
 }

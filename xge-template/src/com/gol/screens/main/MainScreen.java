@@ -16,13 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonValue;
 import com.gol.CommonRes;
 import com.gol.GameStarter;
+import com.gol.request.GameURL;
+import com.gol.request.Protocol;
+import com.gol.request.ProtocolListener;
 import com.gol.xge.rpg.scense.CoreScreen;
 import com.gol.xge.rpg.scense.TacticsScreen;
 import com.gol.xge.rpg.ui.AnimationActor;
 import com.gol.xge.rpg.ui.NumericBar;
 import com.gol.xge.util.XGECommon;
 
-public class MainScreen extends TacticsScreen {
+public class MainScreen extends TacticsScreen implements ProtocolListener{
 
 	private String TAG = this.getClass().getSimpleName();
 
@@ -39,6 +42,8 @@ public class MainScreen extends TacticsScreen {
 	private AnimationActor actor;
 
 	private TextButton btn;
+
+	private Label requestMessage;
 
 	public MainScreen(Game game, AssetManager manager) {
 		super(game, GameStarter.width, GameStarter.height);
@@ -156,7 +161,38 @@ public class MainScreen extends TacticsScreen {
 			}
 		});
 		this.addActorTop(btn);
+
+		TextButton requestMessageBtn = new TextButton("request random message", skin);
+		requestMessageBtn.setX(width / 2);
+		requestMessageBtn.setY(btn.getY() - 140);
+		requestMessageBtn.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				requestMessage();
+			}
+		});
+		this.addActorTop(requestMessageBtn);
+
+
+		requestMessage = new Label("message", skin);
+		requestMessage.setX( 200);
+		requestMessage.setY(requestMessageBtn.getY());
+		this.addActorTop(requestMessage);
+		
 	}
+
+	protected void requestMessage() {
+		Gdx.app.log(TAG, "requestMessage");
+		requestMessage.setText("requesting");
+		GameStarter.getInstance().sendRequest(GameURL.test, null);
+	}
+
+	@Override
+	public boolean process(Protocol p) {
+		Gdx.app.log(TAG, "process " + p.getT());
+		requestMessage.setText(p.getT());
+		return true;
+	}
+	
 
 	String[] actionNameList = { "run", "stand", "attack", "beat" };
 	int actionIndex = 0;
